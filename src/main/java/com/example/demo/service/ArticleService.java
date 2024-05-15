@@ -33,7 +33,7 @@ public class ArticleService {
         if (!valigateRequestBody(body))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        appendArticle(body);
+        articleList.append(body);
         return ResponseEntity.created(URI.create("/article")).build();
     }
 
