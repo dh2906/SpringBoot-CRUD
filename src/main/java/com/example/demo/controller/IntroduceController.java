@@ -1,15 +1,11 @@
-package com.example.demo;
+package com.example.demo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class IntroduceController {
@@ -22,8 +18,8 @@ public class IntroduceController {
 
     @GetMapping("/json")
     @ResponseBody
-    public Map<String, Object> printJson() {
-        Map<String, Object> user = new HashMap<String, Object>();
+    public HashMap<String, Object> printJson() {
+        HashMap<String, Object> user = new HashMap<>();
         user.put("name", "이동훈");
         user.put("age", 23);
         return user;

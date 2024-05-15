@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/article")
 public class ArticleController {
@@ -18,12 +20,12 @@ public class ArticleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         articleList.appendArticle(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.created(URI.create("/article")).build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity checkArticle(@PathVariable Integer id) {
-        if (articleList.index(id) == null)
+        if (!articleList.checkContainId(id))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         return ResponseEntity.ok(articleList.index(id));
