@@ -1,6 +1,6 @@
-package com.example.demo.unit;
+package com.example.demo.entity;
 
-import com.example.demo.dto.AddArticleDto;
+import com.example.demo.dto.ArticleDto;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ public class Article {
     public String detail;
     public Date postDate;
 
-    Article(AddArticleDto body) {
+    public Article(ArticleDto body) {
         this.name = body.getName();
         this.title = body.getTitle();
         this.detail = body.getDetail();

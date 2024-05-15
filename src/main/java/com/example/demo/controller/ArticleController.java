@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.unit.Articles;
-import com.example.demo.dto.AddArticleDto;
+import com.example.demo.repository.Articles;
+import com.example.demo.dto.ArticleDto;
 import com.example.demo.valigate.DtoValigater;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class ArticleController {
     private Articles articleList = new Articles();
 
     @PostMapping()
-    public ResponseEntity addArticle(@RequestBody AddArticleDto request){
+    public ResponseEntity addArticle(@RequestBody ArticleDto request){
         if (!DtoValigater.valigate(request))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
@@ -32,7 +32,7 @@ public class ArticleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity editArticle(@RequestBody AddArticleDto request, @PathVariable Integer id) {
+    public ResponseEntity editArticle(@RequestBody ArticleDto request, @PathVariable Integer id) {
         if (!DtoValigater.valigate(request))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 

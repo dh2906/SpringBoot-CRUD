@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-public class AddArticleDto {
+public class ArticleDto {
     private String name;
     private String title;
     private String detail;

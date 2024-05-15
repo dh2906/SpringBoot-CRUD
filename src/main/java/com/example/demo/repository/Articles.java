@@ -1,13 +1,14 @@
-package com.example.demo.unit;
+package com.example.demo.repository;
 
-import com.example.demo.dto.AddArticleDto;
+import com.example.demo.dto.ArticleDto;
+import com.example.demo.entity.Article;
 import java.util.HashMap;
 
 public class Articles {
     private final HashMap<Integer, Article> articleList = new HashMap<>();
     private static Integer id = 1;
 
-    public void appendArticle(AddArticleDto body) {
+    public void appendArticle(ArticleDto body) {
         articleList.put(id, new Article(body));
         id++;
     }
@@ -20,7 +21,7 @@ public class Articles {
         return id;
     }
 
-    public void edit(Integer id, AddArticleDto body) {
+    public void edit(Integer id, ArticleDto body) {
         articleList.put(id, new Article(body));
     }
 
