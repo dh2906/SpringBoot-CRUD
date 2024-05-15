@@ -4,7 +4,11 @@ import com.example.demo.dto.ArticleDto;
 import com.example.demo.entity.Article;
 import com.example.demo.repository.Articles;
 import com.example.demo.valigate.DtoValigater;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.net.URI;
 
 @Service
 public class ArticleService {
@@ -14,23 +18,38 @@ public class ArticleService {
         return DtoValigater.valigate(body);
     }
 
-    public boolean checkContainId(Integer id) {
-        return articleList.checkContainId(id);
-    }
-
     public Article findValue(Integer id) {
         return articleList.value(id);
     }
 
-    public void appendArticle(ArticleDto body) {
-        articleList.append(body);
+    public ResponseEntity getArticle(Integer id) {
+        if (!articleList.checkContainId(id))
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        return ResponseEntity.ok(findValue(id));
     }
 
-    public void editContent(Integer id, ArticleDto body) {
+    public ResponseEntity appendArticle(ArticleDto body) {
+        if (!valigateRequestBody(body))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+        appendArticle(body);
+        return ResponseEntity.created(URI.create("/article")).build();
+    }
+
+    public ResponseEntity editArticle(Integer id, ArticleDto body) {
+        if (!articleList.checkContainId(id))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
         articleList.edit(id, body);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    public void deleteArticle(Integer id) {
+    public ResponseEntity deleteArticle(Integer id) {
+        if (!articleList.checkContainId(id))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
         articleList.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
