@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
+import java.util.HashMap;
 
 @Service
 public class ArticleService {
@@ -22,34 +23,51 @@ public class ArticleService {
         return articleList.value(id);
     }
 
-    public ResponseEntity getArticle(Integer id) {
-        if (!articleList.checkContainId(id))
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
-        return ResponseEntity.ok(findValue(id));
+    public HashMap<Integer, Article> getAllArticle() {
+        return articleList.getAll();
     }
 
-    public ResponseEntity appendArticle(ArticleDto body) {
+    public Article getArticle(Integer id) {
+        return findValue(id);
+    }
+
+    public boolean checkContainId(Integer id) {
+        return articleList.checkContainId(id);
+    }
+
+    public boolean appendArticle(ArticleDto body) {
         if (!valigateRequestBody(body))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return false;
 
         articleList.append(body);
-        return ResponseEntity.created(URI.create("/article")).build();
+        return true;
     }
 
-    public ResponseEntity editArticle(Integer id, ArticleDto body) {
+    public boolean editArticle(Integer id, ArticleDto body) {
         if (!articleList.checkContainId(id))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return false;
 
         articleList.edit(id, body);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return true;
     }
 
-    public ResponseEntity deleteArticle(Integer id) {
+    public boolean deleteArticle(Integer id) {
+        final int CUR_ID = Articles.getId();
+
         if (!articleList.checkContainId(id))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return false;
 
         articleList.delete(id);
-        return ResponseEntity.noContent().build();
+
+        if (CUR_ID > 2) {
+            for (int i = id; i < CUR_ID; i++)
+                articleList.edit(i, findValue(i + 1));
+
+            articleList.delete(CUR_ID - 1);
+        }
+
+        Articles.decreaseId();
+
+        return true;
     }
 }

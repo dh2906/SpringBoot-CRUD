@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BCSD Community</title>
+</head>
+<body>
+<p>Back-End 자유게시판</p>
+<tr th:each="item : ${items}">
+    <h1><td th:text="${item.value.getTitle()}"></td></h1>
+    <hr/>
+    <h><p>작성자명 [[${item.value.getName()}]]</p></h>
+    <h><p>작성일자 [[${item.value.getPostDate()}]]</p></h>
+    <p>글 내용 <td th:text="${item.value.getDetail()}"></td></p>
+    <br><br>
+</tr>
+</body>
+</html>

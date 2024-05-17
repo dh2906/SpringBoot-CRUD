@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.dto.ArticleDto;
 import com.example.demo.entity.Article;
 
+import java.util.Date;
 import java.util.HashMap;
 
 public class Articles {
@@ -22,8 +23,20 @@ public class Articles {
         return id;
     }
 
+    public static void decreaseId() {
+        id--;
+    }
+
+    public HashMap<Integer, Article> getAll() {
+        return articleList;
+    }
+
     public void edit(Integer id, ArticleDto body) {
         articleList.put(id, new Article(body));
+    }
+
+    public void edit(Integer id, Article body) {
+        articleList.put(id, body);
     }
 
     public boolean checkContainId(Integer id) {
