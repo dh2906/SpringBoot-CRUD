@@ -1,17 +1,22 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.ArticleDto;
+import com.example.demo.dto.AddArticleDto;
+import com.example.demo.dto.UpdateArticleDto;
+import com.example.demo.entity.Article;
 import com.example.demo.repository.Articles;
 import com.example.demo.service.ArticleService;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.net.URI;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping()
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ArticleController {
     ArticleService articleService = new ArticleService();
 
@@ -23,7 +28,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles")
-    public ResponseEntity getAllArticle() {
+    public ResponseEntity<HashMap<Integer, Article>> getAllArticle() {
         if (Articles.getId() == 1)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
@@ -39,16 +44,15 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public ResponseEntity postArticle(@RequestBody ArticleDto request){
+    public ResponseEntity postArticle(@RequestBody AddArticleDto request){
         if (!articleService.appendArticle(request))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         return ResponseEntity.created(URI.create("/article")).build();
-
     }
 
     @PutMapping("/articles/{id}")
-    public ResponseEntity putArticle(@RequestBody ArticleDto request, @PathVariable Integer id) {
+    public ResponseEntity putArticle(@RequestBody UpdateArticleDto request, @PathVariable Integer id) {
         if (!articleService.editArticle(id, request))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 

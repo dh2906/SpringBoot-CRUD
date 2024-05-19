@@ -1,21 +1,19 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.ArticleDto;
+import com.example.demo.dto.AddArticleDto;
+import com.example.demo.dto.UpdateArticleDto;
 import com.example.demo.entity.Article;
 import com.example.demo.repository.Articles;
 import com.example.demo.valigate.DtoValigater;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
 import java.util.HashMap;
 
 @Service
 public class ArticleService {
     private final Articles articleList = new Articles();
 
-    public boolean valigateRequestBody(ArticleDto body) {
+    public boolean valigateRequestBody(AddArticleDto body) {
         return DtoValigater.valigate(body);
     }
 
@@ -35,7 +33,7 @@ public class ArticleService {
         return articleList.checkContainId(id);
     }
 
-    public boolean appendArticle(ArticleDto body) {
+    public boolean appendArticle(AddArticleDto body) {
         if (!valigateRequestBody(body))
             return false;
 
@@ -43,7 +41,7 @@ public class ArticleService {
         return true;
     }
 
-    public boolean editArticle(Integer id, ArticleDto body) {
+    public boolean editArticle(Integer id, UpdateArticleDto body) {
         if (!articleList.checkContainId(id))
             return false;
 

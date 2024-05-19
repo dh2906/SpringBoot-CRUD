@@ -9,9 +9,8 @@
 <tr th:each="item : ${items}">
     <h1><td th:text="${item.value.getTitle()}"></td></h1>
     <hr/>
-    <h><p>작성자명 [[${item.value.getName()}]]</p></h>
-    <h><p>작성일자 [[${item.value.getPostDate()}]]</p></h>
-    <p>글 내용 <td th:text="${item.value.getDetail()}"></td></p>
+    <p>[[${item.value.getName()}]] | [[${item.value.getDateFormat(item.value.getPostDate())}]]</p>
+    <p>[[${item.value.getDetail()}]]</p>
     <br><br>
 </tr>
 </body>

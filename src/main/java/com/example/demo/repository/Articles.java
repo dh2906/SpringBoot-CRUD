@@ -1,16 +1,16 @@
 package com.example.demo.repository;
 
-import com.example.demo.dto.ArticleDto;
+import com.example.demo.dto.AddArticleDto;
+import com.example.demo.dto.UpdateArticleDto;
 import com.example.demo.entity.Article;
-
-import java.util.Date;
 import java.util.HashMap;
 
 public class Articles {
     private final HashMap<Integer, Article> articleList = new HashMap<>();
     private static Integer id = 1;
 
-    public void append(ArticleDto body) {
+    public void append(AddArticleDto body) {
+
         articleList.put(id, new Article(body));
         id++;
     }
@@ -31,8 +31,8 @@ public class Articles {
         return articleList;
     }
 
-    public void edit(Integer id, ArticleDto body) {
-        articleList.put(id, new Article(body));
+    public void edit(Integer id, UpdateArticleDto body) {
+        articleList.put(id, new Article(body, articleList.get(id).getPostDate()));
     }
 
     public void edit(Integer id, Article body) {

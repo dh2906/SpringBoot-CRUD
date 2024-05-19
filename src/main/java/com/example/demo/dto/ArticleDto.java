@@ -1,18 +1,11 @@
 package com.example.demo.dto;
 
-import java.util.Date;
+import com.example.demo.valigate.DtoValigater;
 
 public class ArticleDto {
-    private String name;
-    private String title;
-    private String detail;
-    private Date postDate;
-    private Date editDate;
-
-    ArticleDto() {
-        postDate = new Date();
-        editDate = new Date();
-    }
+    protected String name;
+    protected String title;
+    protected String detail;
 
     public String getName() {
         return name;
@@ -26,11 +19,7 @@ public class ArticleDto {
         return detail;
     }
 
-    public Date getPostDate() {
-        return postDate;
-    }
-
-    public Date getEditDate() {
-        return editDate;
+    public boolean valigate(ArticleDto body) {
+        return DtoValigater.valigate(body);
     }
 }
