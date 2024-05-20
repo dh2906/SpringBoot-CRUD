@@ -2,21 +2,16 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.AddArticleDto;
 import com.example.demo.dto.UpdateArticleDto;
-import com.example.demo.entity.Article;
 import com.example.demo.repository.Articles;
 import com.example.demo.service.ArticleService;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import java.net.URI;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping()
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ArticleController {
     ArticleService articleService = new ArticleService();
 
@@ -28,7 +23,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles")
-    public ResponseEntity<HashMap<Integer, Article>> getAllArticle() {
+    public ResponseEntity getAllArticle() {
         if (Articles.getId() == 1)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
