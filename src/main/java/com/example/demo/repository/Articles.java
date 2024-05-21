@@ -7,12 +7,10 @@ import java.util.HashMap;
 
 public class Articles {
     private final HashMap<Integer, Article> articleList = new HashMap<>();
-    private static Integer id = 1;
+    private static Integer id = 0;
 
     public void append(AddArticleDto body) {
-
-        articleList.put(id, new Article(body));
-        id++;
+        articleList.put(++id, new Article(body));
     }
 
     public Article value(Integer id) {

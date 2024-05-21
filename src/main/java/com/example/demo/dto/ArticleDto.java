@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-import com.example.demo.valigate.DtoValigater;
+import com.example.demo.validate.DtoValidater;
 
 public class ArticleDto {
     protected String name;
@@ -20,6 +20,6 @@ public class ArticleDto {
     }
 
     public boolean valigate(ArticleDto body) {
-        return DtoValigater.valigate(body);
+        return DtoValidater.valigate(body);
     }
 }
