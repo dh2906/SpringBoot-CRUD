@@ -24,7 +24,7 @@ public class ArticleController {
 
     @GetMapping("/articles")
     public ResponseEntity getAllArticle() {
-        if (Articles.getId() == 1)
+        if (Articles.getId() == 0)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         return ResponseEntity.ok(articleService.getAllArticle());
