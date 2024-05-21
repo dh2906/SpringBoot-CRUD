@@ -13,8 +13,8 @@ import java.util.HashMap;
 public class ArticleService {
     private final Articles articleList = new Articles();
 
-    public boolean valigateRequestBody(AddArticleDto body) {
-        return DtoValidater.valigate(body);
+    public boolean validateRequestBody(AddArticleDto body) {
+        return DtoValidater.validate(body);
     }
 
     public Article findValue(Integer id) {
@@ -34,7 +34,7 @@ public class ArticleService {
     }
 
     public boolean appendArticle(AddArticleDto body) {
-        if (!valigateRequestBody(body))
+        if (!validateRequestBody(body))
             return false;
 
         articleList.append(body);
@@ -57,7 +57,7 @@ public class ArticleService {
 
         articleList.delete(id);
 
-        if (CUR_ID > 2) {
+        if (CUR_ID >= 2) {
             for (int i = id; i < CUR_ID; i++)
                 articleList.edit(i, findValue(i + 1));
 

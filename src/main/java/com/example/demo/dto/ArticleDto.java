@@ -19,7 +19,7 @@ public class ArticleDto {
         return detail;
     }
 
-    public boolean valigate(ArticleDto body) {
-        return DtoValidater.valigate(body);
+    public boolean validate(ArticleDto body) {
+        return DtoValidater.validate(body);
     }
 }
