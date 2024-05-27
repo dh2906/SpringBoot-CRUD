@@ -5,13 +5,15 @@
     <title>BCSD Community</title>
 </head>
 <body>
-<p>Back-End 자유게시판</p>
-<tr th:each="item : ${items}">
-    <h1><td th:text="${item.value.getTitle()}"></td></h1>
+<h1 th:if="${boardName == null}">전체</h1>
+<h1 th:if="${boardName != null}">[[${boardName}]]</h1>
+<hr/>
+<div th:each="item : ${items}" style="border-style: solid; padding: 15px; margin-bottom: 30px;">
+    <h2><p>[[${item.title}]]</p></h2>
     <hr/>
-    <p>[[${item.value.getName()}]] | [[${item.value.getDateFormat(item.value.getPostDate())}]]</p>
-    <p>[[${item.value.getDetail()}]]</p>
+    <p>[[${item.authorName}]] | [[${item.createdDate}]]</p>
+    <p>[[${item.content}]]</p>
     <br><br>
-</tr>
+</div>
 </body>
 </html>

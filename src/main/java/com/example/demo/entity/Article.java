@@ -1,68 +1,69 @@
 package com.example.demo.entity;
 
-import com.example.demo.dto.AddArticleDto;
-import com.example.demo.dto.UpdateArticleDto;
+import com.example.demo.repository.MemberRepositoryJdbc;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.cglib.core.Local;
+
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Article {
-    private Member member = new Member();
+    private Integer id;
+    private Integer authorId;
+    private Integer boardId;
     private String title;
-    private String detail;
+    private String content;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Date postDate;
+    private LocalDateTime createdDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Date editDate;
+    private LocalDateTime modifiedDate;
 
-    public Article(AddArticleDto body) {
-        this.member.setName(body.getName());
-        this.title = body.getTitle();
-        this.detail = body.getDetail();
-        this.postDate = body.getPostDate();
-        this.editDate = new Date();
+    public Article(Integer id, Integer authorId, Integer boardId,
+                   String title, String content, LocalDateTime createdDate,
+                   LocalDateTime modifiedDate) {
+        this.id = id;
+        this.authorId = authorId;
+        this.boardId = boardId;
+        this.title = title;
+        this.content = content;
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
     }
 
-    public Article(UpdateArticleDto body, Date postDate) {
-        this.member.setName(body.getName());
-        this.title = body.getTitle();
-        this.detail = body.getDetail();
-        this.postDate = postDate;
-        this.editDate = body.getEditDate();
+    public Integer getId() {
+        return id;
     }
 
-    public Article(Article body) {
-        this.member.setName(body.getName());
-        this.title = body.getTitle();
-        this.detail = body.getDetail();
-        this.postDate = body.postDate;
-        this.editDate = body.editDate;
+    public Integer getAuthorId() {
+        return authorId;
     }
 
-    public String getName() {
-        return member.getName();
+    public Integer getBoardId() {
+        return boardId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getDetail() {
-        return detail;
+    public String getContent() {
+        return content;
     }
 
-    public Date getPostDate() {
-        return postDate;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public Date getEditDate() {
-        return editDate;
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
     }
 
-    public String getDateFormat(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd. HH:mm");
-        return simpleDateFormat.format(date);
+    public String getDateFormat(LocalDateTime date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd. HH:mm:ss");
+        return date.format(formatter);
     }
 }
