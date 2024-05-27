@@ -94,6 +94,10 @@ public class Service {
         return boardRepository.findById(boardId);
     }
 
+    public Article getRecentArticle() {
+        return articleRepository.getRecent();
+    }
+
     public String getAuthorName(Integer authorId) {
         return memberRepository.findName(authorId);
     }

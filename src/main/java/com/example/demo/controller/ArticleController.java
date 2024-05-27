@@ -47,7 +47,8 @@ public class ArticleController {
         if (!service.appendArticle(request))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        return ResponseEntity.created(URI.create("/article")).build();
+        return ResponseEntity.created(URI.create("/article"))
+                .body(service.getRecentArticle());
     }
 
     @PutMapping("/articles/{id}")

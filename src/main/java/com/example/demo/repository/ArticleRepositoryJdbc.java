@@ -7,6 +7,7 @@ import com.example.demo.entity.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.View;
 import java.util.List;
@@ -20,6 +21,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional
     @Override
     public void append(AddRequestArticleDto dto) {
         String sql = "INSERT INTO article (author_id, board_id, title, content, created_date, modified_date)" +
@@ -47,11 +49,32 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
     }
 
     @Override
+    public Article getRecent() {
+        String sql = "SELECT * FROM article ORDER BY id DESC LIMIT 1";
+        Article article = jdbcTemplate.queryForObject(sql,
+                    (rs, rowNum) -> {
+                    Article temp = new Article(
+                            rs.getInt("id"),
+                            rs.getInt("author_id"),
+                            rs.getInt("board_id"),
+                            rs.getString("title"),
+                            rs.getString("content"),
+                            rs.getTimestamp("created_date").toLocalDateTime(),
+                            rs.getTimestamp("modified_date").toLocalDateTime()
+                    );
+                    return temp;
+                });
+        return article;
+    }
+
+    @Transactional
+    @Override
     public void edit(Integer id, UpdateRequestArticleDto body) {
         String sql = "UPDATE article SET title=?, content=?, modified_date=now() WHERE id = ?";
         jdbcTemplate.update(sql, body.getTitle(), body.getContent(), id);
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
         String sql = "DELETE FROM article WHERE id = ?";
@@ -68,7 +91,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
                             rs.getInt("id"),
                             rs.getInt("author_id"),
                             rs.getInt("board_id"),
-                            rs.getString("title"),
+                            rs.getString(   "title"),
                             rs.getString("content"),
                             rs.getTimestamp("created_date").toLocalDateTime(),
                             rs.getTimestamp("modified_date").toLocalDateTime()

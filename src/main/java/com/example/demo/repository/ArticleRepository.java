@@ -16,6 +16,7 @@ public interface ArticleRepository {
     public List<Article> getAll();
     public List<Article> getBoardAll(Integer boardId);
     public List<ViewResponseDto> getBoardAllToView(Integer boardId);
+    public Article getRecent();
     public boolean isEmpty();
     public boolean containId(Integer id);
     public boolean containBoardId(Integer boardId);

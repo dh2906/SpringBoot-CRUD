@@ -5,6 +5,8 @@ import com.example.demo.entity.Board;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Repository
@@ -23,6 +25,7 @@ public class BoardRepositoryJdbc implements BoardRepository{
         return boardName;
     }
 
+    @Transactional
     @Override
     public void delete(Integer id) {
 
