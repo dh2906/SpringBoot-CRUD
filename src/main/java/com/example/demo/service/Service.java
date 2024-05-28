@@ -10,6 +10,7 @@ import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.MemberRepositoryJdbc;
 import com.example.demo.validate.DtoValidater;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.View;
 import java.util.List;
@@ -46,6 +47,7 @@ public class Service {
     }
 
 
+    @Transactional
     public boolean appendArticle(AddRequestArticleDto body) {
         if (!validateRequestBody(body))
             return false;
@@ -66,6 +68,7 @@ public class Service {
         return articleRepository.containBoardId(boardId);
     }
 
+    @Transactional
     public boolean editArticle(Integer id, UpdateRequestArticleDto body) {
         if (!articleRepository.containId(id))
             return false;
@@ -74,6 +77,7 @@ public class Service {
         return true;
     }
 
+    @Transactional
     public boolean deleteArticle(Integer id) {
         if (!articleRepository.containId(id))
             return false;
