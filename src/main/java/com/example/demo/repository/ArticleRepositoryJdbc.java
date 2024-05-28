@@ -5,12 +5,14 @@ import com.example.demo.dto.request.UpdateRequestArticleDto;
 import com.example.demo.dto.response.ViewResponseDto;
 import com.example.demo.entity.Article;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.text.View;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ArticleRepositoryJdbc implements ArticleRepository {
@@ -30,22 +32,28 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
     }
 
     @Override
-    public Article findById(Integer id) {
+    public Optional<Article> findById(Integer id) {
         String sql = "SELECT * FROM article WHERE id = ?";
-        Article article = jdbcTemplate.queryForObject(sql,
-                (rs, rowNum) -> {
-                    Article temp = new Article(
-                            rs.getInt("id"),
-                            rs.getInt("author_id"),
-                            rs.getInt("board_id"),
-                            rs.getString("title"),
-                            rs.getString("content"),
-                            rs.getTimestamp("created_date").toLocalDateTime(),
-                            rs.getTimestamp("modified_date").toLocalDateTime()
-                    );
-                    return temp;
-                }, id);
-        return article;
+        try {
+            Article article = jdbcTemplate.queryForObject(sql,
+                    (rs, rowNum) -> {
+                        Article temp = new Article(
+                                rs.getInt("id"),
+                                rs.getInt("author_id"),
+                                rs.getInt("board_id"),
+                                rs.getString("title"),
+                                rs.getString("content"),
+                                rs.getTimestamp("created_date").toLocalDateTime(),
+                                rs.getTimestamp("modified_date").toLocalDateTime()
+                        );
+                        return temp;
+                    }, id);
+            return Optional.of(article);
+        }
+
+        catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override
@@ -83,7 +91,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
     }
 
     @Override
-    public List<Article> getAll() {
+    public List<Article> getArticles() {
         String sql = "SELECT * FROM article ORDER BY board_id, id";
         List<Article> articles = jdbcTemplate.query(sql,
                 (rs, rowNum) -> {
@@ -125,7 +133,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
         return cnt > 0;
     }
 
-    public List<Article> getBoardAll(Integer boardId) {
+    public List<Article> getArticlesByBoardId(Integer boardId) {
         String sql = "SELECT * FROM article WHERE board_id = ?";
         List<Article> articles = jdbcTemplate.query(sql,
                 (rs, rowNum) -> {
@@ -143,7 +151,7 @@ public class ArticleRepositoryJdbc implements ArticleRepository {
         return articles;
     }
 
-    public List<ViewResponseDto> getBoardAllToView(Integer boardId) {
+    public List<ViewResponseDto> getArticlesViewByBoardId(Integer boardId) {
         String sql = "SELECT * FROM article JOIN member ON article.author_Id = member.id         WHERE board_id = ?";
         List<ViewResponseDto> response = jdbcTemplate.query(sql,
                 (rs, rowNum) -> {

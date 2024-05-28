@@ -7,15 +7,16 @@ import com.example.demo.dto.response.ViewResponseDto;
 import com.example.demo.entity.Article;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository {
     public void append(AddRequestArticleDto body);
-    public Article findById(Integer id);
+    public Optional<Article> findById(Integer id);
     public void edit(Integer id, UpdateRequestArticleDto body);
     public void delete(Integer id);
-    public List<Article> getAll();
-    public List<Article> getBoardAll(Integer boardId);
-    public List<ViewResponseDto> getBoardAllToView(Integer boardId);
+    public List<Article> getArticles();
+    public List<Article> getArticlesByBoardId(Integer boardId);
+    public List<ViewResponseDto> getArticlesViewByBoardId(Integer boardId);
     public Article getRecent();
     public boolean isEmpty();
     public boolean containId(Integer id);

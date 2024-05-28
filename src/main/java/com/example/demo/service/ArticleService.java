@@ -7,24 +7,23 @@ import com.example.demo.entity.Article;
 import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.MemberRepository;
-import com.example.demo.repository.MemberRepositoryJdbc;
 import com.example.demo.validate.DtoValidater;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.View;
 import java.util.List;
+import java.util.Optional;
 
 @org.springframework.stereotype.Service
-public class Service {
+public class ArticleService {
     private final ArticleRepository articleRepository;
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
     @Autowired
-    public Service(ArticleRepository articleRepository,
-                   BoardRepository boardRepository,
-                   MemberRepository memberRepository) {
+    public ArticleService(ArticleRepository articleRepository,
+                          BoardRepository boardRepository,
+                          MemberRepository memberRepository) {
         this.articleRepository = articleRepository;
         this.boardRepository = boardRepository;
         this.memberRepository = memberRepository;
@@ -34,15 +33,26 @@ public class Service {
         return DtoValidater.validate(body);
     }
 
-    public Article findArticle(Integer id) {
+    public Optional<Article> getArticleById(Integer id) {
         return articleRepository.findById(id);
     }
 
-    public List<Article> getAllArticle() {
-        return articleRepository.getAll();
+    public List<Article> getArticles() {
+        return articleRepository.getArticles();
     }
 
-    public List<ViewResponseDto> getAllArticleToView() {
+    public List<Article> getArticlesByBoardId(Integer boardId) {
+        return articleRepository.getArticlesByBoardId(boardId);
+    }
+
+    public List<Article> checkGetArticlesByBoardId(Integer boardId) {
+        if (boardId == null)
+            return getArticles();
+
+        return getArticlesByBoardId(boardId);
+    }
+
+    public List<ViewResponseDto> getArticlesView() {
         return boardRepository.findAllToView();
     }
 
@@ -86,12 +96,9 @@ public class Service {
         return true;
     }
 
-    public List<Article> getBoardAllArticle(Integer boardId) {
-        return articleRepository.getBoardAll(boardId);
-    }
 
-    public List<ViewResponseDto> getBoardAllArticleToView(Integer boardId) {
-        return articleRepository.getBoardAllToView(boardId);
+    public List<ViewResponseDto> getArticlesViewByBoardId(Integer boardId) {
+        return articleRepository.getArticlesViewByBoardId(boardId);
     }
 
     public String getBoardName(Integer boardId) {
